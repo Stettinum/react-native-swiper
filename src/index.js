@@ -141,6 +141,7 @@ export default class extends Component {
     activeDotStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number]),
     dotColor: PropTypes.string,
     activeDotColor: PropTypes.string,
+    appendChildMode: PropTypes.bool,
     /**
      * Called when the index has changed because the user swiped.
      */
@@ -171,6 +172,7 @@ export default class extends Component {
     autoplayTimeout: 2.5,
     autoplayDirection: true,
     index: 0,
+    appendChildMode: false,
     onIndexChanged: () => null
   }
 
@@ -395,7 +397,9 @@ export default class extends Component {
   updateIndex = (offset, dir, cb) => {
     const state = this.state
     let index = state.index
-    const diff = offset[dir] - this.internals.offset[dir]
+
+    const diff = this.props.appendChildMode ? (offset[dir] - this.internals.offset[dir]  === 0 ? -360 : offset[dir] - this.internals.offset[dir]) :  offset[dir] - this.internals.offset[dir]
+
     const step = dir === 'x' ? state.width : state.height
     let loopJump = false
 
